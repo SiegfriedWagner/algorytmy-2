@@ -1,6 +1,5 @@
 #include <array>
 #include <vector>
-#include <cassert>
 #include <tuple>
 #include <iostream>
 #include <iomanip>
@@ -19,7 +18,7 @@ void printVectorOfVectors(const vector<vector<int>> &arr) {
 }
 
 bool solve_knight_step(vector<vector<int>> &chessBoard, int fieldsToOccupy, int currentX, int currentY) {
-    chessBoard[currentX][currentY] = --fieldsToOccupy;
+    chessBoard[currentX][currentY] = fieldsToOccupy--;
     if (fieldsToOccupy == 0)
         return true;
     for (int i = 0; i < steps; ++i) {
@@ -50,7 +49,7 @@ tuple<bool, vector<vector<int>>> solve_knight(int chessboardSize, int startingX,
         }
     }
     int fieldsToOccupy = chessboardSize * chessboardSize;
-    chessboard[startingX][startingY] = fieldsToOccupy;
+    chessboard[startingX][startingY] = fieldsToOccupy--;
     // printVectorOfVectors(chessboard);
     for (int stepIdx = 0; stepIdx < steps; ++stepIdx) {
         auto x = startingX + vertical[stepIdx];
@@ -58,6 +57,8 @@ tuple<bool, vector<vector<int>>> solve_knight(int chessboardSize, int startingX,
         if (chessboard[x][y] == 0) {
             if (solve_knight_step(chessboard, fieldsToOccupy, x, y))
                 return make_tuple(true, chessboard);
+            else
+                printVectorOfVectors(chessboard);
         }
 
     }
@@ -65,7 +66,7 @@ tuple<bool, vector<vector<int>>> solve_knight(int chessboardSize, int startingX,
 }
 
 int main(int argc, char **argv) {
-    auto result = solve_knight(6, 5, 5);
+    auto result = solve_knight(9, 0, 0);
     if (get<0>(result))
         cout << "Found solution" << endl;
     else
