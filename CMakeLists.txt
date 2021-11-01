@@ -5,3 +5,5 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(perm)
 add_subdirectory(knight)
+add_subdirectory(queen)
+add_subdirectory(warnsdorf)

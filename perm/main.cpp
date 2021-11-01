@@ -33,8 +33,8 @@ int main() {
     // wariacje bez powrotrzen  n < dictionarySum, dictionarySym[k] = 1 : k = 0, 1, ...
     // wariacje z powtorzeniami n < dictionarySum, dictionarySum[k] > 0 : k = 0, 1, ...
     int n = 5; // dlugosc szukanych kombinacji
-    vector<int> dictionary = { 2, 2, 1  }; // liczba dostepnych symboli
-    vector<int> symbols = { 1, 2, 3}; // zbior symboli
+    vector<int> dictionary = { 2, 2, 1, 1 }; // liczba dostepnych symboli
+    vector<int> symbols = { 1, 2, 3, 4}; // zbior symboli
     vector<int> word(n, 0);
     int dictionarySum = 0;
     for(int i : dictionary)
