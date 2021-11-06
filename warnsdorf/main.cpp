@@ -12,15 +12,8 @@ const array<int32_t, steps> horizontal = {1, 2, 2, 1, -1, -2, -2, -1};
 const array<int32_t, steps> vertical = {2, 1, -1, -2, -2, -1, 1, 2};
 using neigh_t = int32_t;
 
-struct WansdoffStackData {
-    int32_t x;
-    int32_t y;
-    int8_t step;
-    array<int8_t, 8> orderOfVisiting;
-};
-
-bool solve_wansdoff(vector<vector<int32_t>> &board, vector<vector<neigh_t>> &neighbours, const int32_t currentX,
-                    const int32_t currentY, int32_t stepsRemaining) {
+bool solve_warnsdoff(vector<vector<int32_t>> &board, vector<vector<neigh_t>> &neighbours, const int32_t currentX,
+                     const int32_t currentY, int32_t stepsRemaining) {
     if (stepsRemaining == 0)
         return true;
     array<neigh_t, steps> visitingOrder = {-1, -1, -1, -1, -1, -1, -1, -1};
@@ -59,7 +52,7 @@ bool solve_wansdoff(vector<vector<int32_t>> &board, vector<vector<neigh_t>> &nei
         while (visitingOrder[i] != -1) {
             auto newX = currentX + vertical[visitingOrder[i]];
             auto newY = currentY + horizontal[visitingOrder[i]];
-            if (solve_wansdoff(board, neighbours, newX, newY, stepsRemaining))
+            if (solve_warnsdoff(board, neighbours, newX, newY, stepsRemaining))
                 return true;
             i++;
         }
@@ -93,7 +86,7 @@ int main(int32_t argc, char **argv) {
     for (int32_t i = 2; i < chessBoardSize + 2; ++i)
         for (int32_t j = 2; j < chessBoardSize + 2; ++j)
             board[i][j] = unset;
-    printVectorOfVectors(board);
+    // printVectorOfVectors(board);
     vector<vector<neigh_t>> numberOfValidNeighbours((chessBoardSize + 4), vector<neigh_t>(chessBoardSize + 4, 10));
     for (int32_t i = 2; i < chessBoardSize + 2; ++i) {
         for (int32_t j = 2; j < chessBoardSize + 2; ++j) {
@@ -110,7 +103,7 @@ int main(int32_t argc, char **argv) {
     startingX += 2;
     startingY += 2;
     printVectorOfVectors(numberOfValidNeighbours);
-    if (solve_wansdoff(board, numberOfValidNeighbours, startingX, startingY, chessBoardSize * chessBoardSize - 1))
+    if (solve_warnsdoff(board, numberOfValidNeighbours, startingX, startingY, chessBoardSize * chessBoardSize - 1))
         printVectorOfVectors(board);
     else
         cout << "not found" << endl;
