@@ -1,11 +1,13 @@
 //
-// Created by mateu on 04.11.2021.
+// Created by mateu on 09.11.2021.
 //
+
+#ifndef ALGORYTMY_2_HASHSET_H
+#define ALGORYTMY_2_HASHSET_H
 #include <vector>
 #include <array>
 #include <cassert>
 #include <iostream>
-#include "hashed_types.h"
 #include "../primes.h"
 using namespace std;
 
@@ -134,27 +136,59 @@ public:
                 cout << elements[i] << endl;
         }
     }
+    // TODO: Lock collection for adding/removing elements while iterator is alive OR make copy of collection
+    struct Iterator {
+        using iterator_category = std::forward_iterator_tag;
+        using difference_type = std::ptrdiff_t;
+        using value_type = T;
+        using pointer = T*;
+        using referece = T&;
+        Iterator(HashSet<T> const *ptr) : current(nullptr), current_pos(0), set_ptr(ptr) { // TODO: consider if passing raw pointer is harmful
+            moveForward();
+        }
+        static Iterator End(HashSet<T> const *ptr) {
+            Iterator end(ptr);
+            // find first filled spot starting from end
+            for (size_t i = ptr->filled_spots.size() - 1; i >= 0; --i)
+                if (ptr->filled_spots[i]) {
+                    end.current = ptr->elements.data() + i;
+                    end.current_pos = i;
+                }
+            return end;
+        }
+        referece operator*() const { return *current; }
+        pointer operator->() { return current; };
+        Iterator& operator++() {
+            moveForward();
+            return *this;
+        }
+        Iterator& operator++(int) {
+            auto tmp = *this;
+            ++(*this);
+            return tmp;
+        }
+        friend bool operator== (const Iterator& a, const Iterator& b) { return a.current == b.current; };
+        friend bool operator!= (const Iterator& a, const Iterator& b) { return a.current != b.current; };
+
+    private:
+        T* current;
+        size_t current_pos;
+        const HashSet<T> *set_ptr; // TODO: Try to avoid naked pointer
+        void moveForward() {
+            if (current_pos >= set_ptr->filled_spots.size()) {
+                current_pos = set_ptr->filled_spots.size() - 1;
+                return;
+            }
+            for (size_t i = current_pos + 1; i < set_ptr->filled_spots.size(); ++i)
+                if (set_ptr->filled_spots[i]) {
+                    current_pos = i;
+                    current = set_ptr->elements + current_pos;
+                }
+        };
+    };
+
+    Iterator begin() { return Iterator(this); };
+    Iterator end() { return Iterator::End(this); };
 };
 
-int main(int argc, char **argv) {
-    HashSet<int> set;
-    set.insert(10);
-    set.print();
-    set.insert(20);
-    set.print();
-    set.insert(33);
-    set.print();
-    set.insert(87);
-    set.print();
-    set.remove(10);
-    set.print();
-    set.remove(1);
-    set.print();
-    set.remove(33);
-    set.print();
-    set.remove(87);
-    set.print();
-    set.remove(20);
-    set.print();
-    return 0;
-}
+#endif //ALGORYTMY_2_HASHSET_H
