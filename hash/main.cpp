@@ -15,7 +15,7 @@ class HashSet {
 private:
     vector<T> elements;
     vector<bool> filled_spots;
-    uint32_t count;
+    uint32_t count_;
     uint32_t conflicts_count;
     bool low_water_mark;
     bool high_water_mark;
@@ -33,14 +33,14 @@ private:
         uint32_t new_conflicts_count = 0;
         uint32_t new_count = 0;
         int i = 0;
-        while (count > 0) {
+        while (count_ > 0) {
             if (filled_spots[i]) {
                 insert_internal(elements[i], new_elements, new_filled_spots, new_conflicts_count, new_count);
-                count--;
+                count_--;
             }
             i++;
         }
-        count = new_count;
+        count_ = new_count;
         conflicts_count = new_conflicts_count;
         elements = new_elements;
         filled_spots = new_filled_spots;
@@ -49,11 +49,11 @@ private:
     };
 
     bool highWaterCheck() {
-        return count == elements.size() || conflicts_count > 0 && (float) count / elements.size() > 0.75f;
+        return count_ == elements.size() || conflicts_count > 0 && (float) count_ / elements.size() > 0.75f;
     }
 
     bool lowWaterCheck() {
-        return (float) count / elements.size() < 0.25f;
+        return (float) count_ / elements.size() < 0.25f;
     }
 
     void rehash(uint32_t emptied_spot) {
@@ -97,13 +97,13 @@ private:
     }
 
 public:
-    HashSet() : elements(primes[0]), filled_spots(primes[0]), count(0), low_water_mark(false), high_water_mark(false),
+    HashSet() : elements(primes[0]), filled_spots(primes[0]), count_(0), low_water_mark(false), high_water_mark(false),
                 primes_spot(0) {}
 
     void insert(const T &element) {
         if (high_water_mark)
             resize(true);
-        insert_internal(element, elements, filled_spots, conflicts_count, count);
+        insert_internal(element, elements, filled_spots, conflicts_count, count_);
         high_water_mark = highWaterCheck();
         low_water_mark = false;
     };
@@ -117,7 +117,7 @@ public:
             if (elements[key] == element) {
                 filled_spots[key] = false;
                 elements[key] = {};
-                count--;
+                count_--;
                 low_water_mark = lowWaterCheck();
                 high_water_mark = false;
                 rehash(key);
@@ -128,7 +128,7 @@ public:
     }
 
     void print() {
-        cout << "Number of conflicts:" << conflicts_count << " total size: " << elements.size() << " elements count: " << count << endl;
+        cout << "Number of conflicts:" << conflicts_count << " total size: " << elements.size() << " elements count: " << count_ << endl;
         for (int i = 0; i < elements.size(); ++i) {
             if (filled_spots[i])
                 cout << elements[i] << endl;

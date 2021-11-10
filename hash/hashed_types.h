@@ -54,6 +54,12 @@ struct Struct {
     Int32 int_value;
     Double float_value;
     Int64 long_value;
+    bool operator ==(const Struct &s) const {
+        return int_value == s.int_value && float_value == s.float_value && long_value == s.long_value;
+    }
+    bool operator !=(const Struct &s) const {
+        return !(*this == s);
+    }
 };
 
 template<>
@@ -85,7 +91,7 @@ struct std::hash<Double> {
 template<>
 struct std::hash<String> {
     std::size_t operator() (String const & val) const noexcept {
-        size_t h;
+        size_t h = 0;
         for (int i = 0; i < val.value.size(); ++i)
             h += (val.value[i] - 'a' + 1) * primes[i];
         return h;

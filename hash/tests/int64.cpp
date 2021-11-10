@@ -7,11 +7,11 @@
 #include "gmock/gmock.h"
 
 using namespace std;
-namespace TestInt32 {
-    using SetType = HashSet<Int32>;
-    constexpr array<Int32, 20> testData = {10, 20, 33, 87, 82, 24, 85, 35, 20, 4, 10090, 393, 235, 8, 99, 100, 1, 2, 67,
+namespace TestInt64 {
+    using SetType = HashSet<Int64>;
+    constexpr array<Int64, 20> testData = {10, 20, 33, 87, 82, 24, 85, 35, 20, 4, 10090, 393, 235, 8, 99, 100, 1, 2, 67,
                                            69};
-#define TestName TestInt32
+#define TestName TestInt64
     TEST(TestName, CreatingCollection) {
         SetType set;
         for (auto e : testData)
