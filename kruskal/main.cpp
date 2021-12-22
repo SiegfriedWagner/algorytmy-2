@@ -4,7 +4,7 @@
 #include "./edge.h"
 #include "../external/argparse.h"
 #include <vector>
-#include <forward_list>
+#include <list>
 #include <memory>
 #include <string>
 #include <fstream>
@@ -13,7 +13,7 @@
 using namespace std;
 struct Subset {
     int rank;
-    forward_list<Edge<int, int>> elements;
+    list<Edge<int, int>> elements;
 };
 
 void
@@ -23,7 +23,7 @@ subsets_union(const shared_ptr<Subset> from, const shared_ptr<Subset> to, vector
         global_list[edge.vertexB] = to;
     }
     to->rank += from->rank;
-    to->elements.splice_after(to->elements.before_begin(), from->elements);
+    to->elements.splice(to->elements.begin(), from->elements);
 }
 
 int main(int arc, char **argv) {
