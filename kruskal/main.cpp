@@ -17,7 +17,9 @@ struct Subset {
 };
 
 void
-subsets_union(const shared_ptr<Subset> from, const shared_ptr<Subset> to, vector<shared_ptr<Subset>> global_list) {
+subsets_union(const shared_ptr<Subset> from, const shared_ptr<Subset> to, vector<shared_ptr<Subset>> &global_list) {
+    if (to == from)
+        return;
     for (auto &edge: from->elements) {
         global_list[edge.vertexA] = to;
         global_list[edge.vertexB] = to;
@@ -56,8 +58,7 @@ int main(int arc, char **argv) {
                 cout << edge.weight << " " << edge.vertexA << " " << edge.vertexB << endl;
             }
             vector<shared_ptr<Subset>> vertexToSubSet(maxVertex + 1, nullptr);
-            auto edge = edges.begin();
-            while (edge != edges.end()) {
+            for(auto edge = edges.begin(); edge < edges.end(); edge++) {
                 int from_index = edge->vertexA;
                 int to_index = edge->vertexB;
                 int from_rank =
@@ -67,19 +68,24 @@ int main(int arc, char **argv) {
                     swap(from_rank, to_rank);
                     swap(from_index, to_index);
                 }
-                if (to_rank < 0) {
-                    vertexToSubSet[to_index] = make_shared<Subset>();
-                    vertexToSubSet[to_index]->rank = 0;
+                if (from_rank < 0) {
+                    vertexToSubSet[from_index] = vertexToSubSet[to_index] = make_shared<Subset>();
+                    vertexToSubSet[from_index]->elements.push_front(*edge);
+                    vertexToSubSet[from_index]->rank = 1;
+                    continue;
                 }
-                vertexToSubSet[to_index]->elements.push_front(*edge);
-                vertexToSubSet[to_index]->rank++;
                 if (to_rank > 0)
-                    subsets_union(vertexToSubSet[from_index], vertexToSubSet[to_index], vertexToSubSet);
-                if (vertexToSubSet[to_index]->rank == vertices.size() - 1)
+                    subsets_union( vertexToSubSet[to_index], vertexToSubSet[from_index], vertexToSubSet);
+                else
+                {
+                    vertexToSubSet[from_index]->elements.push_front(*edge);
+                    vertexToSubSet[from_index]->rank++;
+                    vertexToSubSet[to_index] = vertexToSubSet[from_index];
+                }
+                if (vertexToSubSet[from_index]->rank == vertices.size() - 1)
                     break;
-                edge++;
             }
-            for(auto &e :  vertexToSubSet[edge->vertexA]->elements) {
+            for(auto &e :  vertexToSubSet[1]->elements) {
                 cout << e.vertexA << " >-- " << e.weight << " --> " << e.vertexB << endl;
             }
         });
