@@ -1,0 +1,3 @@
+add_executable(tarjan_tests_articulation tarjan_test.cpp)
+add_compile_definitions(VERBOSE)
+target_link_libraries(tarjan_tests_articulation gtest gmock gtest_main)
