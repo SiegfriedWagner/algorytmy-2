@@ -1,0 +1,5 @@
+include(GoogleTest)
+add_executable(test_articulation test_articulation.cpp)
+add_compile_definitions(VERBOSE)
+target_link_libraries(test_articulation gtest gmock gtest_main)
+gtest_discover_tests(test_articulation)

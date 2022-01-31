@@ -2,7 +2,7 @@
 // Created by mateu on 19.01.2022.
 //
 #include <iostream>
-#include "tarjan.h"
+#include "bridges.h"
 using namespace std;
 int main(int argc, char **argv) {
     // https://eduinf.waw.pl/inf/alg/001_search/0130a.php#P2
@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     graph.addEdge(1, 2);
     graph.addEdge(2, 3);
     graph.addEdge(2, 4);
-    auto solution = tarjan_bridge::trajan(graph);
+    auto solution = bridges::findBridges(graph);
     for (auto bridge: solution)
         cout << bridge.vertexB << "  <-->  " << bridge.vertexA << endl;
     return 0;

@@ -2,7 +2,7 @@
 // Created by mateu on 20.01.2022.
 //
 
-#ifndef ALGORYTMY_2_TARJAN_H
+#ifndef ALGORYTMY_2_ARTICULATION_H
 #define ALGORYTMY_2_TARJAN_H
 
 #include <vector>
@@ -11,11 +11,11 @@
 #include <cassert>
 #include "../bigraph.h"
 #define NOT_VISITED_VALUE -1
-namespace tarjan_bridge {
+namespace bridges {
 // returns true if bridge exists between current and next edge
     bool
-    trajan_dfs(const BiGraph &graph, std::vector<int> &visited, std::vector<int> &low, const int vertex, int &lastVisitedNumber,
-               std::vector<Edge> &bridges, const int fromVertex) {
+    dfs(const BiGraph &graph, std::vector<int> &visited, std::vector<int> &low, const int vertex, int &lastVisitedNumber,
+        std::vector<Edge> &bridges, const int fromVertex) {
         assert(visited[vertex] == NOT_VISITED_VALUE);
         visited[vertex] = ++lastVisitedNumber;
         for (int newVertex: graph.getEdges()[vertex]) {
@@ -26,7 +26,7 @@ namespace tarjan_bridge {
                         low[vertex] = min;
                 }
                 continue;
-            } else if (trajan_dfs(graph, visited, low, newVertex, lastVisitedNumber, bridges, vertex)) {
+            } else if (dfs(graph, visited, low, newVertex, lastVisitedNumber, bridges, vertex)) {
                 bridges.emplace_back(vertex, newVertex);
             }
         }
@@ -42,7 +42,7 @@ namespace tarjan_bridge {
         return lowCalc == visited[vertex];
     }
 
-    std::vector<Edge> trajan(const BiGraph &graph) {
+    std::vector<Edge> findBridges(const BiGraph &graph) {
         std::vector<Edge> result;
         int vertex = 0;
         // pick starting vertex index
@@ -53,8 +53,8 @@ namespace tarjan_bridge {
         std::vector<int> low(graph.getVertexCount(), INT_MAX);
         std::vector<int> visited(graph.getVertexCount(), NOT_VISITED_VALUE);
         int lastVisitedNumber = 0;
-        trajan_dfs(graph, visited, low, vertex, lastVisitedNumber, result, -1);
+        dfs(graph, visited, low, vertex, lastVisitedNumber, result, -1);
         return result;
     }
 }
-#endif //ALGORYTMY_2_TARJAN_H
+#endif //ALGORYTMY_2_ARTICULATION_H

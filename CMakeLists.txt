@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.16.3)
 project(algorytmy_2)
 set(CMAKE_CXX_STANDARD 20)
-
+include(CTest)
+enable_testing()
 # Download and unpack googletest at configure time
 configure_file(GoogleTest.txt googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -35,8 +36,8 @@ add_subdirectory(gradient_queen)
 add_subdirectory(hash)
 add_subdirectory(kruskal)
 add_subdirectory(2cnf)
-#  add_subdirectory(bridges)
-# add_subdirectory(articulation)
+add_subdirectory(bridges)
+add_subdirectory(articulation)
 # add_subdirectory(maximum_flow_preflow)
 # add_subdirectory(KMP)
 # add_subdirectory(tarjan)

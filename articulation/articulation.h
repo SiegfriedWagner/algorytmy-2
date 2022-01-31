@@ -2,44 +2,44 @@
 // Created by mateu on 22.01.2022.
 //
 
-#ifndef ALGORYTMY_2_TARJAN_H
-#define ALGORYTMY_2_TARJAN_H
+#ifndef ALGORYTMY_2_ARTICULATION_H
+#define ALGORYTMY_2_ARTICULATION_H
 
 #include <vector>
 #include <cassert>
 #include "../bigraph.h"
 
-namespace tarjan_articulation {
+namespace articulation {
     const int NOT_VISITED_VALUE = -1;
 
-    int tarjan_dfs(const BiGraph &graph, std::vector<int> &visited,
-                    std::vector<int> &articulationPoints, const int vertex, const int fromVertex,
-                    int &lastVisitedNumber) {
+    int dfs(const BiGraph &graph, std::vector<int> &visited,
+            std::vector<int> &articulation_points, const int vertex, const int from_vertex,
+            int &last_visited_number) {
         assert(vertex < visited.size());
         assert(visited[vertex] == NOT_VISITED_VALUE);
-        int low = visited[vertex] = ++lastVisitedNumber;
-        bool test = false;
+        int low = visited[vertex] = ++last_visited_number;
+        bool has_child_without_access_to_older = false;
         for (auto nextVertex: graph.getEdges()[vertex]) {
-            if (nextVertex != fromVertex) {
+            if (nextVertex != from_vertex) {
                 if (visited[nextVertex] == NOT_VISITED_VALUE) {
-                    auto childLow= tarjan_dfs(graph, visited, articulationPoints, nextVertex, vertex, lastVisitedNumber);
+                    auto childLow= dfs(graph, visited, articulation_points, nextVertex, vertex, last_visited_number);
                     if (childLow < low)
                         low = childLow;
                     if (childLow >= visited[vertex])
-                        test = true;
+                        has_child_without_access_to_older = true;
                 }
                 else if(visited[nextVertex] < low)
                     low = visited[nextVertex];
             }
         }
-        if (test) {
-            articulationPoints.push_back(vertex);
+        if (has_child_without_access_to_older) {
+            articulation_points.push_back(vertex);
         }
 
         return low;
     }
 
-    std::vector<int> tarjan(const BiGraph &graph) {
+    std::vector<int> findArticulationPoints(const BiGraph &graph) {
         std::vector<int> result;
         std::vector<int> visited(graph.getVertexCount(), -1);
         // pick starting vertex index
@@ -48,12 +48,12 @@ namespace tarjan_articulation {
                 continue;
             }
             int childCount = 0;
-            int lastVisitedNumber = visited[vertex] = 1;
-            for (int childVertex : graph.getEdges()[vertex]) {
-                if (visited[childVertex] != NOT_VISITED_VALUE)
+            int last_visited_number = visited[vertex] = 1;
+            for (int child_vertex : graph.getEdges()[vertex]) {
+                if (visited[child_vertex] != NOT_VISITED_VALUE)
                     continue;
                 childCount++;
-                tarjan_dfs(graph, visited, result, childVertex, vertex, lastVisitedNumber);
+                dfs(graph, visited, result, child_vertex, vertex, last_visited_number);
             }
             if (childCount > 1) {
                 result.push_back(vertex);
@@ -63,4 +63,4 @@ namespace tarjan_articulation {
         return result;
     }
 }
-#endif //ALGORYTMY_2_TARJAN_H
+#endif //ALGORYTMY_2_ARTICULATION_H

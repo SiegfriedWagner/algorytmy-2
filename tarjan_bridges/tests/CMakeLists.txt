@@ -1,3 +1,0 @@
-add_executable(tarjan_tests_bridges tarjan_test.cpp)
-add_compile_definitions(VERBOSE)
-target_link_libraries(tarjan_tests_bridges gtest gmock gtest_main)

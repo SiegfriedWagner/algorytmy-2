@@ -2,7 +2,7 @@
 // Created by mateu on 21.01.2022.
 //
 #include "../bigraph.h"
-#include "tarjan.h"
+#include "articulation.h"
 #include <iostream>
 using namespace std;
 int main(int argc, char **argv) {
@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     graph.addEdge(3,7);
     graph.addEdge(4, 5);
     graph.addEdge(6, 7);
-    auto solution = tarjan_articulation::tarjan(graph);
+    auto solution = articulation::findArticulationPoints(graph);
     for(auto vextex : solution) {
         cout << " " << vextex;
     }

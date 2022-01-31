@@ -2,11 +2,11 @@
 // Created by mateu on 22.01.2022.
 //
 
-#include "../tarjan.h"
+#include "../articulation.h"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 using namespace std;
-using namespace tarjan_articulation;
+using namespace articulation;
 
 bool contains(vector<int> &vertices, int vertex) {
     for(auto e : vertices) {
@@ -15,8 +15,8 @@ bool contains(vector<int> &vertices, int vertex) {
     }
     return false;
 }
-#define TestTarjan TestTarjanArticulation
-TEST(TestTarjan, TestGraph1) {
+#define TestName TestArticulation
+TEST(TestName, TestGraph1) {
     BiGraph graph;
     graph.addEdge(0, 1);
     graph.addEdge(0, 2);
@@ -25,13 +25,13 @@ TEST(TestTarjan, TestGraph1) {
     graph.addEdge(3, 4);
     graph.addEdge(3, 5);
     graph.addEdge(4, 5);
-    auto solution = tarjan(graph);
+    auto solution = findArticulationPoints(graph);
     ASSERT_EQ(2, solution.size());
     ASSERT_TRUE(contains(solution, 0));
     ASSERT_TRUE(contains(solution, 3));
 }
 
-TEST(TestTrajan, TestGraph2) {
+TEST(TestArticulation, TestGraph2) {
     BiGraph graph;
     graph.addEdge(0, 1);
     graph.addEdge(0, 2);
@@ -44,7 +44,7 @@ TEST(TestTrajan, TestGraph2) {
     graph.addEdge(3,7);
     graph.addEdge(4, 5);
     graph.addEdge(6, 7);
-    auto solution = tarjan(graph);
+    auto solution = findArticulationPoints(graph);
     ASSERT_EQ(2, solution.size());
     ASSERT_TRUE(contains(solution, 0));
     ASSERT_TRUE(contains(solution, 3));
