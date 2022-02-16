@@ -47,7 +47,7 @@ namespace articulation {
             if (visited[vertex] != NOT_VISITED_VALUE || graph.getEdges()[vertex].empty()) {
                 continue;
             }
-            int childCount = 0;
+            int childCount = 0; // immediate child
             int last_visited_number = visited[vertex] = 1;
             for (int child_vertex : graph.getEdges()[vertex]) {
                 if (visited[child_vertex] != NOT_VISITED_VALUE)

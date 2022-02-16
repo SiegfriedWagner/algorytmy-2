@@ -1,0 +1,5 @@
+include(GoogleTest)
+add_executable(TestTarjan test_tarjan.cpp)
+add_compile_definitions(VERBOSE)
+target_link_libraries(TestTarjan gtest gmock gtest_main)
+gtest_discover_tests(TestTarjan)
