@@ -28,6 +28,12 @@ public :
     const std::vector<std::vector<int>> &getEdges() const {
         return edges_;
     }
+
+    [[nodiscard]]
+    std::vector<std::vector<int>> &getEdges() {
+        return edges_;
+    }
+
 };
 
 #endif //ALGORYTMY_2_MATRIX_GRAPH_H

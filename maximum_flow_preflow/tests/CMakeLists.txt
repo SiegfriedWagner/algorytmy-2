@@ -1,0 +1,5 @@
+include(GoogleTest)
+add_executable(TestMaximumFlowPreflow test_maximum_flow_preflow.cpp)
+add_compile_definitions(VERBOSE)
+target_link_libraries(TestMaximumFlowPreflow gtest gmock gtest_main)
+gtest_discover_tests(TestMaximumFlowPreflow)
