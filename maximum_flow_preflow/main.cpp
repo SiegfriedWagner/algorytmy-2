@@ -23,4 +23,11 @@ int main(int argc, char **argv) {
     auto result = max_flow(capacity, 2, 4);
     // printVectorOfVectors(flow);
     cout << "max flow: " << result.first << endl;
+    for (int i = 0; i < result.second.getVertexCount(); ++i) {
+        for (int j = 0; j < result.second.getVertexCount(); ++j) {
+            if (result.second.getEdges()[i][j] > 0)
+                cout << i << " -> " << j << " : " << result.second.getEdges()[i][j] << endl;
+        }
+
+    }
 }

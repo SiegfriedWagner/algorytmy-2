@@ -39,7 +39,7 @@ namespace bridges {
             }
         }
         low[vertex] = lowCalc;
-        return lowCalc == visited[vertex];
+        return lowCalc == visited[vertex]; // check if connection with lower levels is possible
     }
 
     std::vector<Edge> findBridges(const BiGraph &graph) {

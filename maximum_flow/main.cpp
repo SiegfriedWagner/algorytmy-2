@@ -25,5 +25,12 @@ int main()
     graph.addEdge(4, 5, 4);
     auto result = fordFulkerson(graph, 0, 5);
     cout << "The maximum possible flow is " << result.first << endl;
+    for (int i = 0; i < result.second.getVertexCount(); ++i) {
+        for (int j = 0; j < result.second.getVertexCount(); ++j) {
+            if (result.second.getEdges()[i][j] > 0)
+                cout << i << " -> " << j << " : " << result.second.getEdges()[i][j] << endl;
+        }
+
+    }
     return 0;
 }

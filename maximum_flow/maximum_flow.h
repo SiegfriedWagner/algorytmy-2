@@ -55,20 +55,20 @@ std::pair<int, MatrixGraph> fordFulkerson(const MatrixGraph &graph, int source, 
     // while agumenting path
     while (bfs(residualgraph, source, target, parent)) {
         int path_flow = INT_MAX;
-        for (v = target; v != source; v = parent[v]) {
-            u = parent[v];
-            path_flow = std::min(path_flow, residualgraph.getEdges()[u][v]);
+        for (int to = target; to != source; to = parent[to]) {
+            int from = parent[to];
+            path_flow = std::min(path_flow, residualgraph.getEdges()[from][to]);
         }
 
         // change flow
-        for (v = target; v != source; v = parent[v]) {
-            u = parent[v];
-            residualgraph.getEdges()[u][v] -= path_flow;
-            residualgraph.getEdges()[v][u] += path_flow;
-            resultGraph.getEdges()[v][u] += path_flow;
+        for (int to = target; to != source; to = parent[to]) {
+            int from = parent[to];
+            residualgraph.getEdges()[from][to] -= path_flow;
+            residualgraph.getEdges()[to][from] += path_flow;
+            resultGraph.getEdges()[from][to] += path_flow;
         }
         max_flow += path_flow;
     }
-    return {max_flow, residualgraph};
+    return {max_flow, resultGraph};
 }
 #endif //ALGORYTMY_2_MAXIMUM_FLOW_H
